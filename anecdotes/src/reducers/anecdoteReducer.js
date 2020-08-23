@@ -24,6 +24,8 @@ const reducer = (state = initialState, action) => {
     const anecdote = state.find(({id}) => id === action.data.id)
     const newAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
     const newState = state.map(anecdote => anecdote.id === action.data.id ? newAnecdote : anecdote)
+    console.log(newState)
+    newState.sort((leftAnecdote, rightAnecdote) => rightAnecdote.votes - leftAnecdote.votes)
     return newState
   } else if(action.type === 'NEW_ANECDOTE') {
     const anecdote = asObject(action.data.content)
