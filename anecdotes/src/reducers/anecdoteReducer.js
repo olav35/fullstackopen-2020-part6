@@ -40,9 +40,9 @@ export const createAnecdote = (content) => ({
   data: { content }
 })
 
-export const voteOn = (id) => ({
+export const voteOn = (id, content) => ({
   type: 'VOTE',
-  data: { id }
+  data: { id, content }
 })
 
 export default reducer
