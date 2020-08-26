@@ -26,9 +26,9 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const createAnecdote = (content) => ({
+export const createAnecdote = (anecdote) => ({
   type: 'NEW_ANECDOTE',
-  data: { content }
+  data: anecdote
 })
 
 export const voteOn = (id, content) => ({
