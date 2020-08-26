@@ -5,26 +5,15 @@ import Notification from './components/Notification'
 import Filter from './components/Filter'
 import { useDispatch } from 'react-redux'
 import { initializeAnecdotes } from './reducers/anecdoteReducer'
+import anecdoteService from './services/anecdotes'
 
 
 const App = () => {
   const dispatch = useDispatch()
 
-  useEffect(async () => {
-    const data = [
-      {
-        id: 1,
-        content: 'dvorak is epic',
-        votes: 3
-      },
-      {
-        id: 2,
-        content: 'qwerty is a tragedy',
-        votes: 0
-      }
-    ]
-    dispatch(initializeAnecdotes(data))
-  }, [])
+  useEffect(() => {
+    anecdoteService.getAll().then(anecdotes => dispatch(initializeAnecdotes(anecdotes)))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
