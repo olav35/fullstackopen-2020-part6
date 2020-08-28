@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
@@ -19,7 +21,7 @@ const reducer = (state = [], action) => {
     const anecdote = asObject(action.data.content)
     const newState = [...state, anecdote]
     return newState
-  } else if(action.type === 'INITIALIZE_ANECDOTES'){
+  } else if(action.type === 'INIT_ANECDOTES'){
     return action.data
   } else {
     return state
@@ -36,9 +38,14 @@ export const voteOn = (id, content) => ({
   data: { id, content }
 })
 
-export const initializeAnecdotes = (data) => ({
-  type: 'INITIALIZE_ANECDOTES',
-  data
-})
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    })
+  }
+}
 
 export default reducer
