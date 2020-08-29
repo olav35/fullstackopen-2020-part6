@@ -1,10 +1,7 @@
 // I believe this is what was referred to as the message
 const reducer = (state = null, action) => {
-  if(action.type === 'UPDATE_ANECDOTE') {
-    const { newAnecdote } = action.data
-    return `You updated "${newAnecdote.content}"`
-  } else if(action.type === 'NEW_ANECDOTE') {
-    return `You added "${action.data.newAnecdote.content}"`
+  if(action.type === 'SET_NOTIFICATION') {
+    return action.data.notification
   } else if(action.type === 'CLEAR_NOTIFICATION') {
     return null
   } else {
@@ -12,8 +9,18 @@ const reducer = (state = null, action) => {
   }
 }
 
-export const clearNotification = {
-  type: 'CLEAR_NOTIFICATION'
+export const setNotification = (notification, milis = 5000) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: { notification }
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_NOTIFICATION'
+      })
+    }, milis)
+  }
 }
 
 export default reducer
