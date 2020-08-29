@@ -1,25 +1,15 @@
 import anecdoteService from '../services/anecdotes'
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
+const sortAnecdotes = anecdotes => [...anecdotes].sort((leftAnecdote, rightAnecdote) => rightAnecdote.votes - leftAnecdote.votes)
 
 const reducer = (state = [], action) => {
   if(action.type === 'UPDATE_ANECDOTE') {
     const { id, newAnecdote } = action.data
     const newState = state.map(anecdote => anecdote.id === id ? newAnecdote : anecdote)
-    newState.sort((leftAnecdote, rightAnecdote) => rightAnecdote.votes - leftAnecdote.votes)
-    return newState
+    return sortAnecdotes(newState)
   } else if(action.type === 'NEW_ANECDOTE') {
-    const anecdote = asObject(action.data.content)
-    const newState = [...state, anecdote]
-    return newState
+    const { newAnecdote } = action.data
+    return sortAnecdotes([...state, newAnecdote])
   } else if(action.type === 'INIT_ANECDOTES'){
     return action.data
   } else {
@@ -32,7 +22,7 @@ export const createAnecdote = (content) => {
     const newAnecdote = await anecdoteService.create(content)
     dispatch({
       type: 'NEW_ANECDOTE',
-      data: newAnecdote
+      data: { newAnecdote }
     })
   }
 }

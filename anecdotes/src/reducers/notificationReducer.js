@@ -4,7 +4,7 @@ const reducer = (state = null, action) => {
     const { newAnecdote } = action.data
     return `You updated "${newAnecdote.content}"`
   } else if(action.type === 'NEW_ANECDOTE') {
-    return `You added "${action.data.content}"`
+    return `You added "${action.data.newAnecdote.content}"`
   } else if(action.type === 'CLEAR_NOTIFICATION') {
     return null
   } else {
