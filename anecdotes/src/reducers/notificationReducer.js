@@ -1,23 +1,29 @@
-// I believe this is what was referred to as the message
-const reducer = (state = null, action) => {
-  if(action.type === 'SET_NOTIFICATION') {
-    return action.data.notification
-  } else if(action.type === 'CLEAR_NOTIFICATION') {
-    return null
+// Last notification in state is the one to be displayed
+const reducer = (state = [], action) => {
+  if(action.type === 'ADD_NOTIFICATION') {
+    const { notification } = action.data
+    return [...state, notification]
+  } else if(action.type === 'DELETE_NOTIFICATION') {
+    const { id } = action.data 
+    return state.filter(notification => notification.id !== id)
   } else {
     return state
   }
 }
 
-export const setNotification = (notification, milis = 5000) => {
+const getId = _ => Math.floor(Math.random() * 1000000000)
+
+export const setNotification = (content, milis = 5000) => {
   return async dispatch => {
+    const id = getId()
     dispatch({
-      type: 'SET_NOTIFICATION',
-      data: { notification }
+      type: 'ADD_NOTIFICATION',
+      data: { notification: { content, id } }
     })
     setTimeout(() => {
       dispatch({
-        type: 'CLEAR_NOTIFICATION'
+        type: 'DELETE_NOTIFICATION',
+        data: { id }
       })
     }, milis)
   }
