@@ -9,4 +9,6 @@ const getAll = async () => {
 
 const create = (content) => axios.post(baseUrl, { content, votes: 0 }).then(({data}) => data)
 
-export default { getAll, create }
+const update = (id, newObject) => axios.put(`${baseUrl}/${id}`, newObject).then(({data}) => data)
+
+export default { getAll, create, update }

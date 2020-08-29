@@ -11,10 +11,9 @@ const asObject = (anecdote) => {
 }
 
 const reducer = (state = [], action) => {
-  if(action.type === 'VOTE') {
-    const anecdote = state.find(({id}) => id === action.data.id)
-    const newAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
-    const newState = state.map(anecdote => anecdote.id === action.data.id ? newAnecdote : anecdote)
+  if(action.type === 'UPDATE_ANECDOTE') {
+    const { id, newAnecdote } = action.data
+    const newState = state.map(anecdote => anecdote.id === id ? newAnecdote : anecdote)
     newState.sort((leftAnecdote, rightAnecdote) => rightAnecdote.votes - leftAnecdote.votes)
     return newState
   } else if(action.type === 'NEW_ANECDOTE') {
@@ -38,10 +37,18 @@ export const createAnecdote = (content) => {
   }
 }
 
-export const voteOn = (id, content) => ({
-  type: 'VOTE',
-  data: { id, content }
-})
+export const voteOn = (id, anecdote) => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.update(id, { ...anecdote, votes: anecdote.votes + 1 })
+    dispatch({
+      type: 'UPDATE_ANECDOTE',
+      data: {
+        id,
+        newAnecdote
+      }
+    })
+  }
+}
 
 export const initializeAnecdotes = () => {
   return async dispatch => {
