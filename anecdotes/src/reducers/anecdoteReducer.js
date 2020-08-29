@@ -11,7 +11,7 @@ const reducer = (state = [], action) => {
     const { newAnecdote } = action.data
     return sortAnecdotes([...state, newAnecdote])
   } else if(action.type === 'INIT_ANECDOTES'){
-    return action.data
+    return sortAnecdotes(action.data)
   } else {
     return state
   }
